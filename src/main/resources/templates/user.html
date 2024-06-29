@@ -1,11 +1,49 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org" xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <title>Spring Security Example</title>
 </head>
 <body>
-<h1>User, welcome spring boot security page!</h1>
 
+<label>
+    <h1>User</h1>
+    <table>
+        <tr>
+            <th>Username</th>
+            <th>Surname</th>
+            <th>Password</th>
+            <th>Age</th>
+            <th>ROLE</th>
+        </tr>
+        <tr>
+            <td th:text="${user.getName()}"></td>
+            <td th:text="${user.getSurname()}"></td>
+            <td th:text="${user.getPassword()}"></td>
+            <td th:text="${user.getAge()}"></td>
+            <td>
+                <table>
+                    <tr th:each="role : ${user.getRoles()}">
+                        <td th:text="${role.getName()}"></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
 
+</label>
+
+<form th:unless="${#authorization.expression('isAuthenticated()')}" method="get"
+      th:action="@{/login}">
+    <button id="login-button" class="btn btn-primary" type="submit">ENTER</button>
+</form>
+
+<h1>
+    <a th:if="${#authorization.expression('isAuthenticated()')}" href="\logout"> Выйти </a>
+    <a th:unless="${#authorization.expression('isAuthenticated()')}" href="\login"> Войти </a>
+    <p></p>
+    <div sec:authorize="hasAnyRole('ADMIN')">
+        <a href="\admin"> admin </a> <span sec:authentication="name"></span></div>
+
+</h1>
 </body>
 </html>
