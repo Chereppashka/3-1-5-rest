@@ -44,6 +44,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userRepository.deleteById(id);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public User findUser(Long id) {
         Optional<User> user = userRepository.findById(id);
@@ -57,11 +58,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         userRepository.save(user);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<Role> findRoles() {
         return roleRepository.findAll();
     }
 
+    @Transactional
     @Override
     public User findByUsername(String name) {
         Optional<User> user = userRepository.findUserByUsername(name);
@@ -75,4 +78,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         return user.orElseThrow(()-> new UsernameNotFoundException("User not found"));
     }
+
+    @Transactional(readOnly = true)
+    public User getUserWithRoles(Long userId) {
+        User user = userRepository.findById(userId).orElse(null);
+        if (user != null) {
+            user.getRoles().size();
+        }
+        return user;
+    }
+
 }
