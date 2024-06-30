@@ -101,8 +101,8 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return getName();
-    };
+        return username;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

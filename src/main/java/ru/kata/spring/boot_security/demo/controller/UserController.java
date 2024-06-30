@@ -1,21 +1,21 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
-import java.security.Principal;
 
 @Controller
-@RequestMapping("/")
 public class UserController {
 
     private final UserService userService;
@@ -37,7 +37,7 @@ public class UserController {
         return "addUser";
     }
 
-    @PostMapping(value = "/admin/add_user")
+    @PostMapping(value = "/admin/new")
     public String addUser(@ModelAttribute("user") User user) {
         userService.saveUser(user);
         return "redirect:/admin";
@@ -53,18 +53,18 @@ public class UserController {
     public String editUser(Model model, @PathVariable("id") Long id) {
         model.addAttribute("user", userService.findUser(id));
         model.addAttribute("listRoles", userService.findRoles());
-        return "edit";
+        return "/updateUser";
     }
 
-    @PostMapping("/admin/edit/{id}")
+    @PatchMapping("/admin/edit/{id}")
     public String updateUser(@ModelAttribute("user") User user) {
         userService.saveUser(user);
         return "redirect:/admin";
     }
 
-    @GetMapping(value = "/user")
-    public String homePage(Principal principal, Model model) {
-        model.addAttribute("user", userService.findByUsername(principal.getName()));
+    @GetMapping("/user")
+    public String findUser(ModelMap model) {
+        model.addAttribute("user", SecurityContextHolder.getContext().getAuthentication().getPrincipal());
         return "user";
     }
 }

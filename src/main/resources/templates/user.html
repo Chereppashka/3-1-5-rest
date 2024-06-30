@@ -1,49 +1,35 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<html lang="en">
 <head>
-    <title>Spring Security Example</title>
+    <meta charset="UTF-8">
+    <title>All Users</title>
 </head>
 <body>
+<thead>
+<tr>USER INFO</tr>
+</thead>
+<table>
+    <tbody>
+    <tr>
+        <th>ID</th>
+        <th>SURNAME</th>
+        <th>AGE</th>
 
-<label>
-    <h1>User</h1>
-    <table>
-        <tr>
-            <th>Username</th>
-            <th>Surname</th>
-            <th>Password</th>
-            <th>Age</th>
-            <th>ROLE</th>
-        </tr>
-        <tr>
-            <td th:text="${user.getName()}"></td>
-            <td th:text="${user.getSurname()}"></td>
-            <td th:text="${user.getPassword()}"></td>
-            <td th:text="${user.getAge()}"></td>
-            <td>
-                <table>
-                    <tr th:each="role : ${user.getRoles()}">
-                        <td th:text="${role.getName()}"></td>
-                    </tr>
-                </table>
-            </td>
-        </tr>
-    </table>
+    </tr>
+    <tr th:each="user : ${user}">
+        <td th:text="${user.id}"></td>
+        <td th:text="${user.surname}"></td>
+        <td th:text="${user.age}"></td>
 
-</label>
+    </tr>
+    </tbody>
+</table>
 
-<form th:unless="${#authorization.expression('isAuthenticated()')}" method="get"
-      th:action="@{/login}">
-    <button id="login-button" class="btn btn-primary" type="submit">ENTER</button>
+<br>
+<br>
+<form th:action="@{/logout}" method="post">
+    <input type="submit" value="logout"/>
 </form>
-
-<h1>
-    <a th:if="${#authorization.expression('isAuthenticated()')}" href="\logout"> Выйти </a>
-    <a th:unless="${#authorization.expression('isAuthenticated()')}" href="\login"> Войти </a>
-    <p></p>
-    <div sec:authorize="hasAnyRole('ADMIN')">
-        <a href="\admin"> admin </a> <span sec:authentication="name"></span></div>
-
-</h1>
 </body>
 </html>

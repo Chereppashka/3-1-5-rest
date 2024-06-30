@@ -28,12 +28,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .csrf().disable()
                 .authorizeRequests()
+                .antMatchers("/").permitAll()
                 .antMatchers("/admin/**").hasRole("ADMIN")
-                .antMatchers("/user/**").hasAnyRole("USER","ADMIN")
+                .antMatchers("/user/**").hasAnyRole("ADMIN","USER")
+                .anyRequest()
+                .authenticated()
                 .and()
                 .formLogin().successHandler(successUserHandler)
+                .permitAll()
                 .and()
-                .logout().logoutSuccessUrl("/");
+                .logout()
+                .permitAll();
     }
     @Autowired
     @Override
