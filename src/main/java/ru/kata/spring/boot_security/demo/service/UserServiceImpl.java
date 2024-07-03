@@ -1,8 +1,7 @@
 package ru.kata.spring.boot_security.demo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
+
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -55,16 +54,10 @@ public class UserServiceImpl implements UserService {
         return user.orElse(new User());
     }
 
+    @Transactional
     @Override
     public void createUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userRepository.save(user);
-    }
-
-    @Transactional
-    @Override
-    public void updateUser(Long id, User user) {
-        user.setId(id);
         userRepository.save(user);
     }
 
@@ -74,14 +67,4 @@ public class UserServiceImpl implements UserService {
         Optional<User> user = userRepository.findUserByUsername(name);
         return user.orElse(new User());
     }
-
-    @Transactional(readOnly = true)
-    public User getUserWithRoles(Long userId) {
-        User user = userRepository.findById(userId).orElse(null);
-        if (user != null) {
-            user.getRoles().size();
-        }
-        return user;
-    }
-
 }

@@ -6,7 +6,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import ru.kata.spring.boot_security.demo.model.User;
@@ -57,9 +56,9 @@ public class AdminController {
         return "/updateUser";
     }
 
-    @PatchMapping("/admin/edit/{id}")
+    @PostMapping("/admin/edit/{id}")
     public String updateUser(@ModelAttribute("user") User user) {
-        userService.saveUser(user);
+        userService.createUser(user);
         return "redirect:/admin";
     }
 

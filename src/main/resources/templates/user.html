@@ -10,19 +10,28 @@
 <tr>USER INFO</tr>
 </thead>
 <table>
-    <tbody>
-    <tr>
-        <th>ID</th>
-        <th>SURNAME</th>
-        <th>AGE</th>
-
-    </tr>
-    <tr th:each="user : ${user}">
-        <td th:text="${user.id}"></td>
-        <td th:text="${user.surname}"></td>
-        <td th:text="${user.age}"></td>
-
-    </tr>
+    <table>
+        <tr>
+            <th>Username</th>
+            <th>Surname</th>
+            <th>Password</th>
+            <th>Age</th>
+            <th>ROLE</th>
+        </tr>
+        <tr>
+            <td th:text="${user.getName()}"></td>
+            <td th:text="${user.getSurname()}"></td>
+            <td th:text="${user.getAge()}"></td>
+            <td th:text="${user.getPassword()}"></td>
+            <td>
+                <table>
+                    <tr th:each="role : ${user.getRoles()}">
+                        <td th:text="${role.getName()}"></td>
+                    </tr>
+                </table>
+            </td>
+        </tr>
+    </table>
     </tbody>
 </table>
 
