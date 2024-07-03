@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.User;
@@ -13,13 +14,15 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class UserServiceImpl implements UserService, UserDetailsService {
+public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Transactional(readOnly = true)
@@ -31,6 +34,11 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Transactional
     @Override
     public void saveUser(User user) {
+        Optional<User> optionalUser = userRepository.findUserByUsername(user.getName());
+        if (optionalUser.isPresent()) {
+            throw new UsernameNotFoundException("User already exist");
+        }
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
 
@@ -47,6 +55,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return user.orElse(new User());
     }
 
+    @Override
+    public void createUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
+    }
+
     @Transactional
     @Override
     public void updateUser(Long id, User user) {
@@ -59,14 +73,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     public User findByUsername(String name) {
         Optional<User> user = userRepository.findUserByUsername(name);
         return user.orElse(new User());
-    }
-
-    @Transactional
-    @Override
-    public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
-        Optional<User> user = userRepository.findUserByUsername(userName);
-
-        return user.orElseThrow(()-> new UsernameNotFoundException("User not found"));
     }
 
     @Transactional(readOnly = true)
