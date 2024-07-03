@@ -15,7 +15,8 @@
     <input type="text" id="age" th:field="*{age}" >
     <label for="username">username</label>
     <input type="text" id="username" th:field="*{name}" >
-
+    <label for="password">password</label>
+    <input type="text" id="password" th:field="*{password}" >
 
     <select class="form-control" id="roles" name="roles" >
         <option th:each="role : ${listRoles}"
