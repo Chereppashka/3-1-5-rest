@@ -22,7 +22,7 @@ public class SetData {
     }
 
     @PostConstruct
-    public void initiation() {
+    public void init() {
 
         Set<Role> setRoles = new HashSet<>();
         Role adminRole = new Role("ROLE_ADMIN");
@@ -31,11 +31,11 @@ public class SetData {
         setRoles.add(userRole);
         roleService.createRoles(setRoles);
 
-        User admin = new User("admin", "admin", 30, "admin");
+        User admin = new User("admin", "admin", 35, "admin@mail.ru", "admin");
         admin.setRoles(setRoles);
         userService.createUser(admin);
 
-        User user = new User("user", "user", 20, "user");
+        User user = new User("user", "user", 30, "user@mail.ru", "user");
         user.setRoles(Set.of(userRole));
         userService.createUser(user);
     }

@@ -33,7 +33,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public void saveUser(User user) {
-        Optional<User> optionalUser = userRepository.findUserByUsername(user.getName());
+        Optional<User> optionalUser = userRepository.findByEmail(user.getEmail());
         if (optionalUser.isPresent()) {
             throw new UsernameNotFoundException("User already exist");
         }
@@ -64,7 +64,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public User findByUsername(String name) {
-        Optional<User> user = userRepository.findUserByUsername(name);
+        Optional<User> user = userRepository.findByEmail(name);
         return user.orElse(new User());
     }
 }

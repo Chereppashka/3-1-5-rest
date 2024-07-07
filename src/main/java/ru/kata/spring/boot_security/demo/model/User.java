@@ -15,6 +15,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotEmpty;
 import java.util.Collection;
 import java.util.Objects;
 import java.util.Set;
@@ -28,14 +29,21 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @NotEmpty(message = "Name not null")
     @Column(name = "name")
     private String username;
 
+    @NotEmpty(message = "Surname not null")
     @Column(name = "surname")
     private String surname;
 
+
     @Column(name = "age")
     private int age;
+
+    @NotEmpty(message = "Email not null")
+    @Column(name = "email")
+    private String email;
 
     @Column(name = "password")
     private String password;
@@ -52,10 +60,11 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String username, String surname, int age, String password) {
+    public User(String username, String surname, int age, String email, String password) {
         this.username = username;
         this.surname = surname;
         this.age = age;
+        this.email = email;
         this.password = password;
     }
 
@@ -107,6 +116,14 @@ public class User implements UserDetails {
 
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     @Override
