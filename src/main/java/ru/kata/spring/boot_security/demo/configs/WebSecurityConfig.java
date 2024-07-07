@@ -29,16 +29,16 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/auth/login", "/auth/registration").not().fullyAuthenticated()
+                .antMatchers("/login").not().fullyAuthenticated()
                 .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and()
-                .formLogin().loginPage("/auth/login").loginProcessingUrl("/process_login")
+                .formLogin().loginPage("/login").loginProcessingUrl("/process_login")
                 .successHandler(successUserHandler)
                 .and()
                 .logout()
                 .logoutUrl("/logout")
-                .logoutSuccessUrl("/auth/login");
+                .logoutSuccessUrl("/login");
     }
 
     @Override

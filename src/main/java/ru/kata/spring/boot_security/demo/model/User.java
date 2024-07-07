@@ -3,6 +3,7 @@ package ru.kata.spring.boot_security.demo.model;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.Column;
@@ -15,10 +16,12 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
-import javax.validation.constraints.NotEmpty;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Entity
 @Table(name = "users")
@@ -29,11 +32,9 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    @NotEmpty(message = "Name not null")
     @Column(name = "name")
     private String username;
 
-    @NotEmpty(message = "Surname not null")
     @Column(name = "surname")
     private String surname;
 
@@ -41,7 +42,6 @@ public class User implements UserDetails {
     @Column(name = "age")
     private int age;
 
-    @NotEmpty(message = "Email not null")
     @Column(name = "email")
     private String email;
 
@@ -126,6 +126,12 @@ public class User implements UserDetails {
         this.email = email;
     }
 
+    public String rolesToString() {
+        return roles.stream()
+                .map(r -> r.getName().substring(5)).sorted()
+                .collect(Collectors.joining("  "));
+    }
+
     @Override
     public String getUsername() {
         return username;
@@ -133,7 +139,11 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return getRoles();
+        List<GrantedAuthority> grantedAuthorities = new ArrayList<>();
+        for (Role role : getRoles()) {
+            grantedAuthorities.add(new SimpleGrantedAuthority(role.getAuthority()));
+        }
+        return grantedAuthorities;
     }
 
     @Override

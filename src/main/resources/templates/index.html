@@ -87,8 +87,8 @@
                                             <td th:text="${user.surname}"></td>
                                             <td th:text="${user.age}"></td>
                                             <td th:text="${user.email}"></td>
-                                            <td th:each="role : ${user.roles}"
-                                                th:text="${role.name}"></td>
+                                            <td th:text="${user.rolesToString()}"></td>
+
 
                                             <td>
                                                 <button
@@ -118,7 +118,7 @@
                                                             <div class="modal-body">
                                                                 <div class="row justify-content-center align-items-center text-center">
                                                                     <form th:action="@{/admin/{id}(id=${user.id})}"
-                                                                          th:method="PATCH" th:object="${userC}">
+                                                                          th:method="POST" th:object="${userC}">
                                                                         <div class="form-group">
                                                                             <label for="id"><b>ID</b></label>
                                                                             <input type="text" class="form-control"
@@ -140,11 +140,11 @@
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label for="password1"><b>Password</b></label>
-                                                                            <input type="password" class="form-control" id="password1" th:field="*{password}"/>
+                                                                            <input type="password" class="form-control" id="password1" th:field="*{password}" readonly/>
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label for="email1"><b>E-mail</b></label>
-                                                                            <input type="text" class="form-control" id="email1" th:value="${user.email}" th:name="email"/>
+                                                                            <input type="text" class="form-control" id="email1" th:value="${user.email}" th:name="email" readonly/>
                                                                         </div>
                                                                         <div class="form-group">
                                                                             <label for="role222">Role</label>
@@ -225,16 +225,14 @@
                                                                             <input type="text" class="form-control" id="email11" th:value="${user.email}" th:name="email" readonly/>
                                                                         </div>
                                                                         <div class="form-group">
-                                                                            <label for="role22">Role</label>
-
-                                                                            <label for="role2"></label><select th:field="*{roles}" size="2" multiple
-                                                                                                               class="form-control"
-                                                                                                               id="role2" readonly>
-                                                                            <option th:value="ADMIN">ADMIN
-                                                                            </option>
-                                                                            <option th:value="USER">USER
-                                                                            </option>
-                                                                        </select>
+                                                                            <label for="selectRolesD">Role</label>
+                                                                            <select multiple class="form-control" id="selectRolesD"
+                                                                                    name="roles" size="2" disabled>
+                                                                                <option th:each="role:${user.getRoles()}"
+                                                                                        th:text="${role.name.substring(5)}"
+                                                                                        th:value="${role.id}">
+                                                                                </option>
+                                                                            </select>
                                                                         </div>
 
                                                                         <button type="button" class="btn btn-secondary"
@@ -257,78 +255,59 @@
                             </div>
                         </div>
 
-                        <div class="tab-pane fade" id="nav-profile" role="tabpanel"
-                             aria-labelledby="nav-profile-tab">
-                            <div class="card">
-                                <h5 class="card-header">Add new user</h5>
-                                <div class="card-body text-center ">
-
-                                    <form th:method="POST" th:action="@{/admin}" th:object="${userC}">
-                                        <div class="flex-column align-items-center">
-
-                                            <div class="d-flex flex-column align-items-center mb-3">
-                                                <label for="name22" class="font-weight-bold">First name</label>
-                                                <input type="text" class="form-control col-md-3" th:field="*{name}"
-                                                       id="name22"
-                                                       aria-label="Small" aria-describedby="inputGroup-sizing-sm"
-                                                       placeholder="Введите имя">
-                                            </div>
-
-                                            <div class="d-flex flex-column align-items-center mb-3">
-                                                <label for="surname22" class="font-weight-bold">Last name</label>
-                                                <input type="text" class="form-control col-md-3" th:field="*{surname}"
-                                                       id="surname22"
-                                                       aria-label="Small" aria-describedby="inputGroup-sizing-sm"
-                                                       placeholder="Введите фамилию">
-                                            </div>
-                                            <div class="d-flex flex-column align-items-center mb-3">
-                                                <label for="age22" class="font-weight-bold">Age</label>
-                                                <input type="text" class="form-control col-md-3" th:field="*{age}"
-                                                       id="age22"
-                                                       aria-label="Small" aria-describedby="inputGroup-sizing-sm"
-                                                       placeholder="Введите возраст">
-                                            </div>
-
-                                            <div class="d-flex flex-column align-items-center mb-3">
-                                                <label for="email22" class="font-weight-bold">E-mail</label>
-                                                <input type="email" class="form-control col-md-3" th:field="*{email}"
-                                                       id="email22"
-                                                       aria-label="Small" aria-describedby="inputGroup-sizing-sm"
-                                                       placeholder="Введите email">
-                                            </div>
-
-                                            <div class="d-flex flex-column align-items-center mb-3">
-                                                <label for="password22" class="font-weight-bold">Password</label>
-                                                <input type="password" class="form-control col-md-3"
-                                                       th:field="*{password}" id="password22"
-                                                       aria-label="Small" aria-describedby="inputGroup-sizing-sm"
-                                                       placeholder="Введите пароль">
-                                            </div>
-
-                                            <div class="d-flex flex-column align-items-center mb-3">
-                                                <label for="role22" class="font-weight-bold">Role</label>
-
-                                                <label for="role22"></label><select th:field="*{roles}" size="2" multiple
-                                                                                    class="form-control col-md-3"
-                                                                                    id="role22">
-                                                <option th:value="ADMIN">ADMIN
-                                                </option>
-                                                <option th:value="USER">USER
+                        <div class="tab-pane fade" id="nav-profile" role="tabpanel" aria-labelledby="nav-profile-tab">
+                            <div class="row justify-content-center text-center font-weight-bold my-3">
+                                <div class="col-4 ">
+                                    <form th:method="POST" th:action="@{/admin}" th:object="${newUser}">
+                                        <div class="form-group">
+                                            <label for="firstName">First name</label>
+                                            <input type="text" class="form-control" id="firstName" th:field="*{username}"
+                                                   placeholder="First name" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="lastName">Last name</label>
+                                            <input type="text" class="form-control" id="lastName" th:field="*{surname}"
+                                                   placeholder="Last name" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="age">Age</label>
+                                            <input type="number" min="1" class="form-control" id="age" th:field="*{age}"
+                                                   placeholder="Age" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="email">Email</label>
+                                            <input type="email" class="form-control" id="email" th:field="*{email}"
+                                                   placeholder="Email" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="password">Password</label>
+                                            <input type="password" class="form-control" id="password" th:field="*{password}"
+                                                   placeholder="Password" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="selectRoles">Role</label>
+                                            <select multiple id="selectRoles" class="form-control" size="2" name="roles"
+                                                    required>
+                                                <option th:each="role:${listRoles}"
+                                                        th:text="${role.name.substring(5)}"
+                                                        th:value="${role.id}"
+                                                        th:field="*{roles}">
                                                 </option>
                                             </select>
-                                            </div>
-
-                                            <div class="form-group">
-                                                <button type="submit" class="btn btn-success">Add new user</button>
-                                            </div>
+                                        </div>
+                                        <div>
+                                            <input type="submit" class="btn btn-success" value="Add new user"/>
                                         </div>
                                     </form>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
+                    </div>
                 </div>
+            </div>
+        </div>
+    </div>
                 <div class="tab-pane fade" id="v-pills-tab2" role="tabpanel"
                      aria-labelledby="v-pills-tab2-tab">
                     <h2>User information-page</h2>
@@ -356,8 +335,8 @@
                                             <td th:text="${userA.surname}"></td>
                                             <td th:text="${userA.age}"></td>
                                             <td th:text="${userA.email}"></td>
-                                            <td th:each="role : ${userA.roles}"
-                                                th:text="${role.name}"></td>
+                                            <td th:text="${userA.rolesToString()}"></td>
+
                                         </tr>
                                         </tbody>
                                     </table>
