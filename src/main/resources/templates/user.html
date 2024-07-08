@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>User page</title>
-    <link rel="shortcut icon" href="/image/spring-logo.png" type="image/png">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
           integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5/jquery.min.js"></script>
+    <link rel="shortcut icon" href="/image/spring-logo.png" type="image/png">
 <!--    <script src="js/main.js"></script>-->
 </head>
 <body>
@@ -25,7 +25,7 @@
                 <ul class="navbar-nav px-3">
                     <form th:action="@{/logout}" method="post">
                         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                            <button class="text-muted btn btn-dark" type="submit">Logout</button>
+                            <button class="text-muted btn btn-dark" type="submit" href="/login">Logout</button>
                         </div>
                     </form>
                 </ul>
