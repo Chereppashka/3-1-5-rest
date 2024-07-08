@@ -33,7 +33,7 @@ public class User implements UserDetails {
     private long id;
 
     @Column(name = "name")
-    private String username;
+    private String name;
 
     @Column(name = "surname")
     private String surname;
@@ -61,7 +61,7 @@ public class User implements UserDetails {
     }
 
     public User(String username, String surname, int age, String email, String password) {
-        this.username = username;
+        this.name = username;
         this.surname = surname;
         this.age = age;
         this.email = email;
@@ -69,7 +69,7 @@ public class User implements UserDetails {
     }
 
     public User(String name, String surname, int age) {
-        this.username = name;
+        this.name = name;
         this.surname = surname;
         this.age = age;
     }
@@ -83,11 +83,11 @@ public class User implements UserDetails {
     }
 
     public void setName(String username) {
-        this.username = username;
+        this.name = username;
     }
 
     public String getName() {
-        return username;
+        return name;
     }
 
     public String getSurname() {
@@ -134,7 +134,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return username;
+        return name;
     }
 
     @Override
@@ -181,14 +181,14 @@ public class User implements UserDetails {
 
         if (id != user.id) return false;
         if (age != user.age) return false;
-        if (!Objects.equals(username, user.username)) return false;
+        if (!Objects.equals(name, user.name)) return false;
         return Objects.equals(surname, user.surname);
     }
 
     @Override
     public int hashCode() {
         int result = (int) (id ^ (id >>> 32));
-        result = 31 * result + (username != null ? username.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
         result = 31 * result + (surname != null ? surname.hashCode() : 0);
         result = 31 * result + age;
         return result;

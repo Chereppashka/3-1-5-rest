@@ -35,7 +35,7 @@ public class AdminController {
     @GetMapping("/admin")
     public String index(Model model,
                         Authentication authentication) {
-        model.addAttribute("users", userService.listUser());
+        model.addAttribute("user", userService.listUser());
         User user = (User) authentication.getPrincipal();
         model.addAttribute("userA", userService.findUser(user.getId()));
         model.addAttribute("userC", new User());
