@@ -38,6 +38,7 @@ public class AdminController {
         model.addAttribute("user", userService.listUser());
         User user = (User) authentication.getPrincipal();
         model.addAttribute("userA", userService.findUser(user.getId()));
+        model.addAttribute("roles", roleService.findRoles());
         model.addAttribute("userC", new User());
         return "index";
     }
