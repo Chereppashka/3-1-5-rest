@@ -16,15 +16,8 @@
 <div class="container-fluid bg-dark m-0 p-0">
     <div class="row m-0 p-2 ">
         <div class="col-11 text-white">
-            <span class="h5">
-                <th:block
-                        th:text="${userA.getEmail()}">
-                </th:block>
-            </span>
-            <span class="font-weight-light">
-                <th:block
-                        th:text="'with roles: '+ ${userA.rolesToString()}">
-                </th:block>
+            <span class="h5" th:text="${userA.getEmail()}"></span>
+            <span class="font-weight-light" th:text="'with roles: ' + ${userA.rolesToString()}"></span>
             </span>
         </div>
         <div class="col-1 text-white">
@@ -102,7 +95,7 @@
                                             <div class="modal-dialog modal-dialog-centered">
                                                 <div class="modal-content">
                                                     <form id="formEdit" th:method="POST"
-                                                          th:action="@{admin/{id} (id=${user.id})}"
+                                                          th:action="@{/admin/edit}"
                                                           th:object="${user}">
                                                         <div class="modal-header"> <!-- Шапка модального окна -->
                                                             <h5 class="modal-title"
@@ -261,7 +254,7 @@
                             </div>
                             <div class="card-body">
                                 <form id="formNew" th:method="POST"
-                                      th:action="@{/admin}"
+                                      th:action="@{/admin/create}"
                                       th:object="${userC}">
                                     <div class="text-center font-weight-bold">
                                         <div class="row">
@@ -295,7 +288,7 @@
                                                 <input th:name="password" th:type="password"
                                                        class="form-control"
                                                        id="userPasswordNew"
-                                                       placeholder="Password">
+                                                       placeholder="Password" required>
                                                 <br>
                                                 <label for="userRolesNew">Roles</label>
                                                 <select th:name="roles" class="form-control"

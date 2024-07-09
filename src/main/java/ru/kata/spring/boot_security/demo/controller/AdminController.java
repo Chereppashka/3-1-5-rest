@@ -1,8 +1,6 @@
 package ru.kata.spring.boot_security.demo.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -14,18 +12,17 @@ import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.RoleService;
 import ru.kata.spring.boot_security.demo.service.UserService;
 
+
 @Controller
 public class AdminController {
 
     private final UserService userService;
     private final RoleService roleService;
-    private final PasswordEncoder encoder;
 
-    @Autowired
-    public AdminController(UserService userService, RoleService roleService, PasswordEncoder encoder) {
+
+    public AdminController(UserService userService, RoleService roleService) {
         this.userService = userService;
         this.roleService = roleService;
-        this.encoder = encoder;
     }
 
 
@@ -40,11 +37,17 @@ public class AdminController {
         return "index";
     }
 
-    @PostMapping("/admin")
+    @PostMapping("/admin/create")
     public String create(@ModelAttribute("userC") User user) {
 
-        user.setPassword(encoder.encode(user.getPassword()));
         userService.createUser(user);
+        return "redirect:/admin";
+    }
+
+    @PostMapping("/admin/edit")
+    public String update(@ModelAttribute("userUpdate") User user) {
+
+        userService.saveUser(user);
         return "redirect:/admin";
     }
 
@@ -53,12 +56,4 @@ public class AdminController {
         userService.deleteUser(id);
         return "redirect:/admin";
     }
-
-    @PostMapping("/admin/{id}")
-    public String update(@PathVariable Long id, @ModelAttribute("user") User user) {
-        user.setId(id);
-        userService.createUser(user);
-        return "redirect:/admin";
-    }
-
 }
