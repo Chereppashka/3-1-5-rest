@@ -1,7 +1,6 @@
 package ru.kata.spring.boot_security.demo.service;
 
 
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,8 +33,10 @@ public class UserServiceImpl implements UserService {
         Optional<User> optionalUser = userRepository.findById(user.getId());
         if (optionalUser.isPresent()) {
             User existingUser = optionalUser.get();
+            if (!user.getPassword().equals(existingUser.getPassword())) {
+                existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
+            }
 
-            existingUser.setPassword(user.getPassword());
             existingUser.setId(user.getId());
             existingUser.setName(user.getName());
             existingUser.setSurname(user.getSurname());

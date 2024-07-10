@@ -111,36 +111,36 @@
                                                                     <label for="userIdEdit">ID</label>
                                                                     <input th:name="id" th:type="text"
                                                                            class="form-control"
-                                                                           id="userIdEdit" th:value="${user.getId()}"
-                                                                           disabled>
+                                                                           id="userIdEdit" th:value="${user.id}"
+                                                                           readonly>
                                                                     <br>
                                                                     <label for="userFirstNameEdit">First Name</label>
                                                                     <input th:name="name" th:type="text"
                                                                            class="form-control"
                                                                            id="userFirstNameEdit"
-                                                                           th:value="${user.getName()}">
+                                                                           th:value="${user.name}">
                                                                     <br>
                                                                     <label for="userLastNameEdit">Last Name</label>
                                                                     <input th:name="surname" th:type="text"
                                                                            class="form-control"
                                                                            id="userLastNameEdit"
-                                                                           th:value="${user.getSurname()}">
+                                                                           th:value="${user.surname}">
                                                                     <br>
                                                                     <label for="age">Age</label>
                                                                     <input type="number" class="form-control" id="age"
-                                                                           th:value="${user.getAge()}" th:name="age"/>
+                                                                           th:value="${user.age}" th:name="age"/>
                                                                     <br>
                                                                     <label for="userEmailEdit">Email</label>
                                                                     <input th:name="email" th:type="text"
                                                                            class="form-control"
                                                                            id="userEmailEdit"
-                                                                           th:value="${user.getEmail()}">
+                                                                           th:value="${user.email}">
                                                                     <br>
                                                                     <label for="userPasswordEdit">Password</label>
                                                                     <input th:name="password" th:type="text"
                                                                            class="form-control"
                                                                            id="userPasswordEdit"
-                                                                           value="" readonly>
+                                                                           th:value="${user.password}" required>
                                                                     <br>
                                                                     <label for="userRolesEdit">Roles</label>
                                                                     <select th:name="roles" class="form-control"
@@ -148,7 +148,7 @@
                                                                             size="2" multiple required>
                                                                         <option th:each="role:${roles}"
                                                                                 th:value="${role.getId()}"
-                                                                                th:selected="${user.getRoles().contains(role)}"
+                                                                                th:selected="${user.roles.contains(role)}"
                                                                                 th:text="${role.toString()}">
                                                                         </option>
                                                                     </select>
