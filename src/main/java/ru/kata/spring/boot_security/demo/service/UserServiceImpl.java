@@ -34,16 +34,9 @@ public class UserServiceImpl implements UserService {
         if (optionalUser.isPresent()) {
             User existingUser = optionalUser.get();
             if (!user.getPassword().equals(existingUser.getPassword())) {
-                existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
+                user.setPassword(passwordEncoder.encode(user.getPassword()));
             }
-
-            existingUser.setName(user.getName());
-            existingUser.setSurname(user.getSurname());
-            existingUser.setAge(user.getAge());
-            existingUser.setEmail(user.getEmail());
-            existingUser.setRoles(user.getRoles());
-
-            userRepository.save(existingUser);
+            userRepository.save(user);
         }
     }
 
