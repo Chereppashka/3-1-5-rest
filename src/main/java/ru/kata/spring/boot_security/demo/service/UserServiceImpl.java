@@ -29,7 +29,7 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void saveUser(User user) {
+    public void updateUser(User user) {
         Optional<User> optionalUser = userRepository.findById(user.getId());
         if (optionalUser.isPresent()) {
             User existingUser = optionalUser.get();
@@ -37,7 +37,6 @@ public class UserServiceImpl implements UserService {
                 existingUser.setPassword(passwordEncoder.encode(user.getPassword()));
             }
 
-            existingUser.setId(user.getId());
             existingUser.setName(user.getName());
             existingUser.setSurname(user.getSurname());
             existingUser.setAge(user.getAge());
