@@ -21,49 +21,43 @@ public class UserServiceImpl implements UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    @Transactional(readOnly = true)
     @Override
-    public List<User> listUser() {
-        return userRepository.findAll();
-    }
-
     @Transactional
-    @Override
-    public void updateUser(User user) {
-        Optional<User> optionalUser = userRepository.findById(user.getId());
-        if (optionalUser.isPresent()) {
-            User existingUser = optionalUser.get();
-            if (!user.getPassword().equals(existingUser.getPassword())) {
-                user.setPassword(passwordEncoder.encode(user.getPassword()));
-            }
-            userRepository.save(user);
-        }
-    }
-
-    @Transactional
-    @Override
-    public void deleteUser(Long id) {
-        userRepository.deleteById(id);
-    }
-
-    @Transactional(readOnly = true)
-    @Override
-    public User findUser(Long id) {
-        Optional<User> user = userRepository.findById(id);
-        return user.orElse(new User());
-    }
-
-    @Transactional
-    @Override
-    public void createUser(User user) {
+    public void addUser(User user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
     }
 
-    @Transactional
     @Override
-    public User findByUsername(String name) {
-        Optional<User> user = userRepository.findByEmail(name);
-        return user.orElse(new User());
+    @Transactional
+    public void updateUser(User user) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+        userRepository.save(user);
     }
+
+    @Override
+    @Transactional
+    public void removeUser(long id) {
+        userRepository.deleteById(id);
+    }
+
+    @Override
+    @Transactional
+    public User getUserById(long id) {
+        return userRepository.findById(id).get();
+    }
+
+    @Override
+    @Transactional
+    public List<User> getListUsers() {
+        return userRepository.findAll();
+    }
+
+    @Override
+    @Transactional
+    public User findByFirstName(String firstName) {
+        return userRepository.findByFirstName(firstName);
+    }
+
+
 }

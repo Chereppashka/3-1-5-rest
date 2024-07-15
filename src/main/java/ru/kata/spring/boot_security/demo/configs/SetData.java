@@ -33,10 +33,10 @@ public class SetData {
 
         User admin = new User("admin", "admin", 35, "admin@mail.ru", "admin");
         admin.setRoles(setRoles);
-        userService.createUser(admin);
+        userService.addUser(admin);
 
         User user = new User("user", "user", 30, "user@mail.ru", "user");
         user.setRoles(Set.of(userRole));
-        userService.createUser(user);
+        userService.addUser(user);
     }
 }
