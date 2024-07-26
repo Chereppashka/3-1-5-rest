@@ -53,7 +53,6 @@ public class User implements UserDetails {
     Set<Role> roles;
 
     public User(){
-
     }
 
     public User(String firstName, String lastName, int age, String email, String password, Set<Role> roles) {
